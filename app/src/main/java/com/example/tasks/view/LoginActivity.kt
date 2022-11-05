@@ -21,10 +21,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        mViewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         // Inicializa eventos
-        setListeners();
+        setListeners()
         observe()
 
         mViewModel.isAutenticationAvailable()
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
      * Observa ViewModel
      */
     private fun observe() {
-        mViewModel.login.observe(this, {
+        mViewModel.login.observe(this) {
             if (it.success()) {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
@@ -81,13 +81,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 val message = it.failure()
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
-        mViewModel.fingerprint.observe(this, {
+        mViewModel.fingerprint.observe(this) {
             if (it) {
                 showAuthentication()
             }
-        })
+        }
     }
 
     /**
